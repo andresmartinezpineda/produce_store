@@ -8,5 +8,6 @@ urlpatterns = [
     path('signin/',views.signin,name="signin"),     # User login page
     path('logout/',views.signout,name="logout"),     # User logout action
     path('category_create/',views.category_create,name='category_create'), # URL pattern for creating a new product category
-    path('product_create/',views.product_create,name='product_create')
+    path('product_create/',views.product_create,name='product_create'),
+    path('categories/',views.categories,name="categories")
 ]

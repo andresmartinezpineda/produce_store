@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from .forms import CategoryForm,ProductForm
+from .models import Category,Product
 
 def home(request):
     """
@@ -82,7 +83,7 @@ def category_create(request):
     """
     if request.method == 'GET':
         # Render empty category form
-        return render(request, 'category_create.html', {
+        return render(request, 'categories/category_create.html', {
             'form': CategoryForm()
         })
     
@@ -92,17 +93,21 @@ def category_create(request):
         
         if form.is_valid():
             # Save category if form is valid
-            form.save()
+            new_category = form.save(commit=False)
+            new_category.user = request.user
+            new_category.save()
             return redirect('home')
         else:
             # Form has errors, re-render with existing data and error message
-            return render(request, 'category_create.html', {
+            return render(request, 'categories/category_create.html', {
                 'form': form,
                 'error': 'Please correct the errors below.'
             })
 
-def category_list(request):
-    pass
+def categories(request):
+    return render(request,'categories/categories.html',{
+        'categories': Category.objects.filter(user=request.user)
+    })
 
 def product_create(request):
     """
@@ -111,7 +116,7 @@ def product_create(request):
     - Processes form submission on POST request
     """
     if request.method == 'GET':
-        return render(request,'product_create.html',{
+        return render(request,'products/product_create.html',{
             'form': ProductForm()
         })
     else:
@@ -121,7 +126,7 @@ def product_create(request):
             form.save()
             return redirect('home')
         else:
-            return render(request,'product_create.html',{
+            return render(request,'products/product_create.html',{
                 'form': form,
                 'error': 'Please correct the errors below.'
             })

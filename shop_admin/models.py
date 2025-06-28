@@ -1,8 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     #Represents a product category for classification purposes. Example: Fruits, Vegetables, Grains, etc.
     name = models.CharField(max_length=100,unique=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
