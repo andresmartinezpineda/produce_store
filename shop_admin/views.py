@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from .forms import CategoryForm,ProductForm
 from .models import Category,Product
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     """
@@ -67,7 +68,8 @@ def signin(request):
             # Login successful
             login(request,user)
             return redirect('home')
-        
+
+@login_required
 def signout(request):
     """
     Logs the user out and redirects to the login page.
@@ -75,6 +77,7 @@ def signout(request):
     logout(request)
     return redirect('signin')
 
+@login_required
 def category_create(request):
     """
     Handles category creation:
@@ -104,11 +107,16 @@ def category_create(request):
                 'error': 'Please correct the errors below.'
             })
 
+@login_required
 def categories(request):
+    """
+    Displays the list of categories for the logged-in user.
+    """
     return render(request,'categories/categories.html',{
-        'categories': Category.objects.filter(user=request.user)
+        'categories': Category.objects.filter(user=request.user).order_by('name')
     })
 
+@login_required
 def product_create(request):
     """
     Handles the creation of a new product:
@@ -123,7 +131,9 @@ def product_create(request):
         form = ProductForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            new_product = form.save(commit=False)
+            new_product.user = request.user
+            new_product.save()
             return redirect('home')
         else:
             return render(request,'products/product_create.html',{
@@ -131,4 +141,10 @@ def product_create(request):
                 'error': 'Please correct the errors below.'
             })
 
-
+def products_by_category(request,category_id):
+    category = get_object_or_404(Category,pk = category_id,user = request.user)
+    products = Product.objects.filter(category=category,user = request.user).order_by('name')
+    return render(request,'products/products_by_category.html',{
+        'products': products,
+        'category': category
+    })
