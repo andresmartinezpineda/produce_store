@@ -141,10 +141,40 @@ def product_create(request):
                 'error': 'Please correct the errors below.'
             })
 
+@login_required
 def products_by_category(request,category_id):
+    """
+    List products filtered by category for the logged-in user.
+    """
     category = get_object_or_404(Category,pk = category_id,user = request.user)
     products = Product.objects.filter(category=category,user = request.user).order_by('name')
     return render(request,'products/products_by_category.html',{
         'products': products,
         'category': category
     })
+
+
+@login_required
+def edit_product(request,product_id):
+    """
+    Allows logged-in users to edit their own products.
+    """
+    product = get_object_or_404(Product,pk = product_id,user=request.user)
+    if request.method == 'GET':
+        return render(request,'products/edit_product.html',{
+            'form': ProductForm(instance=product)
+        })
+    else:
+        form = ProductForm(request.POST,instance=product)
+        if form.is_valid():
+            product_updated = form.save(commit=False)
+            product_updated.user = request.user
+            product_updated.save()
+            return redirect('categories')
+        else:
+            return render(request,'products/edit_product.html',{
+                'form': form,
+                'error': 'Please correct the errors below.'
+            })
+
+

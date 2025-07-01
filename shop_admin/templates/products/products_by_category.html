@@ -14,7 +14,9 @@
     <ul>
         {%for product in products%}
 
-        <li>{{product}}</li>
+        <li>
+            <a href="{%url 'edit_product' product.id%}">{{product}}</a>
+        </li>
         
         {%endfor%}
     </ul>
