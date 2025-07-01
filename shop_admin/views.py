@@ -195,12 +195,18 @@ def delete_product(request,product_id):
 
 @login_required
 def categories_manage(request):
+    """
+    Displays all categories for the authenticated user with management options (edit, delete).
+    """
     return render(request,'categories/categories_manage.html',{
         'categories': Category.objects.all()
     })
 
 @login_required
 def edit_category(request,category_id):
+    """
+    Edit an existing category owned by the authenticated user.
+    """
     category = get_object_or_404(Category,pk= category_id,user=request.user)
     if request.method == 'GET':
         form = CategoryForm(instance=category)
