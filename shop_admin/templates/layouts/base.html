@@ -9,20 +9,23 @@
     <nav>
         <ul>
             <li>
-                <a href="{%url 'home'%}">Home</a>
+                🏠<a href="{%url 'home'%}">Home</a>
             </li>
             {%if user.is_authenticated%}
             <li>
-                <a href="{%url 'category_create'%}">Category create</a>
+                ➕📂<a href="{%url 'category_create'%}">Category create</a>
             </li>
             <li>
-                <a href="{%url 'categories'%}">Categories</a>
+                ⚙️📂<a href="{%url 'categories_manage'%}">Categories manage </a>
             </li>
             <li>
-                <a href="{%url 'product_create'%}">Product create</a>
+                🍎🥦<a href="{%url 'categories'%}">Categories and their products</a>
             </li>
             <li>
-                <a href="{%url 'logout'%}">Logout</a>
+                ➕🍏<a href="{%url 'product_create'%}">Product create</a>
+            </li>
+            <li>
+                🔒🚪<a href="{%url 'logout'%}">Logout</a>
             </li>
             {%else%}
             <li>

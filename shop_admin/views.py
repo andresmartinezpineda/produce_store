@@ -193,4 +193,36 @@ def delete_product(request,product_id):
     else:
         return redirect('categories')
 
+@login_required
+def categories_manage(request):
+    return render(request,'categories/categories_manage.html',{
+        'categories': Category.objects.all()
+    })
+
+@login_required
+def edit_category(request,category_id):
+    category = get_object_or_404(Category,pk= category_id,user=request.user)
+    if request.method == 'GET':
+        form = CategoryForm(instance=category)
+        return render(request,'categories/edit_category.html',{
+            'form': form
+        })
+
+    else:    
+        form = CategoryForm(request.POST,instance=category)
+        if form.is_valid():
+            updated_category = form.save(commit=False)
+            updated_category.user = request.user
+            updated_category.save()
+            return redirect('categories_manage')
+        
+        else:
+            return render(request, 'categories/edit_category.html', {
+                'form': form,
+                'error': 'Please correct the errors below.'
+            })
+
+
+
+
 
