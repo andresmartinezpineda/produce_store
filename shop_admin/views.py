@@ -153,7 +153,6 @@ def products_by_category(request,category_id):
         'category': category
     })
 
-
 @login_required
 def edit_product(request,product_id):
     """
@@ -162,7 +161,8 @@ def edit_product(request,product_id):
     product = get_object_or_404(Product,pk = product_id,user=request.user)
     if request.method == 'GET':
         return render(request,'products/edit_product.html',{
-            'form': ProductForm(instance=product)
+            'form': ProductForm(instance=product),
+            'product': product
         })
     else:
         form = ProductForm(request.POST,instance=product)
@@ -174,7 +174,23 @@ def edit_product(request,product_id):
         else:
             return render(request,'products/edit_product.html',{
                 'form': form,
+                'product': product,
                 'error': 'Please correct the errors below.'
             })
+
+@login_required
+def delete_product(request,product_id):
+    """
+    Deletes a product belonging to the authenticated user.
+    Only accepts POST requests for safety.
+    """
+    product = get_object_or_404(Product,pk=product_id,user=request.user)
+
+    if request.method == 'POST':
+        product.delete()
+        return redirect('categories')
+    
+    else:
+        return redirect('categories')
 
 

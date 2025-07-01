@@ -11,5 +11,6 @@ urlpatterns = [
     path('category_create/',views.category_create,name='category_create'), # URL pattern for creating a new product category
     path('categories/<int:category_id>/',views.products_by_category,name='products_by_category'),
     path('product_create/',views.product_create,name='product_create'),
-    path('edit_product/<int:product_id>',views.edit_product,name='edit_product')
+    path('edit_product/<int:product_id>',views.edit_product,name='edit_product'),
+    path('delete_product/<int:product_id>',views.delete_product,name='delete_product')
 ]
