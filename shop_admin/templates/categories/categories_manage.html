@@ -1,23 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories manage</title>
-</head>
-<body>
-    {%extends 'layouts/base.html'%}
-    {%block content%}
+{%extends 'layouts/base.html'%}
+
+{%block title%}Categories manage{%endblock%}
+
+{%block content%}
     <h1>Categories edit</h1>
-    <ul>
+    <ul class="list-group">
         {%for category in categories%}
-        <li>
-            <a href="{%url 'edit_category' category.id%}">
-                {{category}}
-            </a>
-        </li>
+            <li class="list-group-item">
+                <a href="{%url 'edit_category' category.id%}">{{category}}</a>
+            </li>
         {%endfor%}
     </ul>
-    {%endblock%}
-</body>
-</html>
+{%endblock%}

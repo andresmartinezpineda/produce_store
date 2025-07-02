@@ -1,0 +1,79 @@
+body {
+    background-color: #f4faef;
+    color: #333333;
+}
+
+h1 {
+    color: #2e7d32;
+}
+
+a {
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #1b5e20;
+}
+
+nav {
+    background-color: #4CAF50;
+}
+
+nav a {
+    color: white;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.nav-link {
+    color: #2e7d32 !important; /* Verde tipo fruver */
+    text-decoration: none !important;
+    font-weight: bold;
+}
+
+ul li a {
+    color: #4CAF50;
+    text-decoration: none; 
+    font-weight: bold; 
+    font-size: 1.3rem;
+}
+
+ul li a:hover {
+    text-decoration: underline; 
+    color: #388E3C;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #388E3C;
+}
+
+.btn-danger {
+    background-color: #E53935;
+    border: none;
+}
+
+.btn-warning {
+    background-color: #FF9800;
+    border: none;
+}
+
+.list-group-item {
+    background-color: white;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+}

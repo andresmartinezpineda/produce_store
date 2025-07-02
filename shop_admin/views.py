@@ -108,15 +108,6 @@ def category_create(request):
             })
 
 @login_required
-def categories(request):
-    """
-    Displays the list of categories for the logged-in user.
-    """
-    return render(request,'categories/categories.html',{
-        'categories': Category.objects.filter(user=request.user).order_by('name')
-    })
-
-@login_required
 def product_create(request):
     """
     Handles the creation of a new product:
@@ -142,18 +133,6 @@ def product_create(request):
             })
 
 @login_required
-def products_by_category(request,category_id):
-    """
-    List products filtered by category for the logged-in user.
-    """
-    category = get_object_or_404(Category,pk = category_id,user = request.user)
-    products = Product.objects.filter(category=category,user = request.user).order_by('name')
-    return render(request,'products/products_by_category.html',{
-        'products': products,
-        'category': category
-    })
-
-@login_required
 def edit_product(request,product_id):
     """
     Allows logged-in users to edit their own products.
@@ -170,7 +149,7 @@ def edit_product(request,product_id):
             product_updated = form.save(commit=False)
             product_updated.user = request.user
             product_updated.save()
-            return redirect('categories')
+            return redirect('all_products')
         else:
             return render(request,'products/edit_product.html',{
                 'form': form,

@@ -1,30 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product details</title>
-</head>
-<body>
-    {%extends 'layouts/base.html'%}
+{%extends 'layouts/base.html'%}
 
-    {%block content%}
+{% block title %}Edit Product{% endblock %}
+
+{%block content%}
+<div class="container mt-4">
+    <h1>Edit Product</h1>
     
-    {{error}}
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
 
-    <form method="POST">
+    <form method="POST" class="mb-3">
         {%csrf_token%}
         {{form.as_p}}
 
-        <button>
-            update
-        </button>
+        <button class="btn btn-success">Update</button>
     </form>
 
     <form action="{%url 'delete_product' product.id%}" method="POST">
         {%csrf_token%}
-        <button>Delete</button>
+        <button class="btn btn-danger">Delete</button>
     </form>
-    {%endblock%}
-</body>
-</html>
+</div>
+{%endblock%}

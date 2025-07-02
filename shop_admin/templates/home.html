@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    {%extends 'layouts/base.html'%}
+{%extends 'layouts/base.html'%}
 
-    {%block content%}
-    <h1>Home</h1>
+{% block title %}Home{% endblock %}
 
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum deserunt ipsam quas a ab similique aut nam labore. Expedita eligendi magni earum qui minima necessitatibus voluptas voluptatem placeat. Omnis voluptatibus dolore sit voluptas ut repudiandae voluptatum numquam facere! Voluptatum voluptatem enim aperiam cumque debitis adipisci maxime inventore blanditiis incidunt magni.</p>
-    {%endblock%}
-</body>
-</html>
+{%block content%}
+<div>
+    <h1>Welcome to Fruver App 🍎🥦</h1>
+
+    <p class="lead">
+        Manage your categories and products easily. Track your inventory and keep your Fruver organized.
+    </p>
+</div>
+{%endblock%}

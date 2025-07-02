@@ -1,32 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All producst</title>
-</head>
-<body>
-    {%extends 'layouts/base.html'%}
+{%extends 'layouts/base.html'%}
 
-    {%block content%}
+{% block title %}All Products{% endblock %}
 
+{%block content%}
+<div class="container mt-4">
+    <h1 class="mb-4">All products</h1>
+    
     {%if products%}
-    <h1>All products</h1>
-
-    <ul>
+    <div class="list-group">
         {%for product in products%}
-        <li>
-            <p><strong>name:</strong> {{product.name}}</p>
+        <div class="list-group-item mb-3">
+            <h5>{{product.name}}</h5>
             <p><strong>description:</strong> {{product.description}}</p>
-            <p><strong>price:</strong> ${{product.price}}</p>
+            <p><strong>price:</strong> ${{product.price}} (per {{product.unit}})</p>
             <p><strong>stock ({{product.unit}}):</strong> {{product.stock}}</p>
             <p><strong>category:</strong> {{product.category}}</p>
-        </li>
-        {%endfor%}
-    </ul>
+
+            <a href="{% url 'edit_product' product.id %}" class="btn btn-primary">Edit</a>
+        </div>
+    {%endfor%}
+    </div>
     {%else%}
-    <p>You have no products registered.</p>
+        <p>You have no products registered.</p>
     {%endif%}
-    {%endblock%}
-</body>
-</html>
+</div>
+{%endblock%}

@@ -1,28 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
-</head>
-<body>
-    {%extends 'layouts/base.html'%}
+{%extends 'layouts/base.html'%}
 
-    {%block content%}
-    <h1>Signup</h1>
+{% block title %}Sign Up{% endblock %}
 
-    {{error}}
+{% load widget_tweaks %}
 
-    <form method="POST">
+{%block content%}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
+        <h2 class="text-center mb-4">Sign Up</h2>
 
-        {%csrf_token%}
-        {{form.as_p}}
+        {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
 
-        <button>
-            Signup
-        </button>
-    </form>
-    {%endblock%}
-    
-</body>
-</html>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username:</label>
+                {{ form.username|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password1" class="form-label">Password:</label>
+                {{ form.password1|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password2" class="form-label">Password confirmation:</label>
+                {{ form.password2|add_class:"form-control" }}
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Create Account</button>
+        </form>
+
+        <div class="mt-3 text-center">
+            <p>Already have an account? <a href="{% url 'signin' %}">Sign in here</a></p>
+        </div>
+    </div>
+</div>
+{%endblock%}

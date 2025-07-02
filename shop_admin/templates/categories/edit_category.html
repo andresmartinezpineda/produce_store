@@ -1,29 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit category</title>
-</head>
-<body>
-    {%extends 'layouts/base.html'%}
-    {%block content%}
+{%extends 'layouts/base.html'%}
 
-    {{error}}
-    <form method="POST">
+{%block title%}Edit categor{%endblock%}
+
+{%block content%}
+
+    <h1>Edit category</h1>
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" class="mb-3">
         {%csrf_token%}
         {{form.as_p}}
 
-        <button>
-            Update
-        </button>
+        <button class="btn btn-primary">Update</button>
     </form>
+
     <form action="{%url 'delete_category' category.id%}" method="POST">
         {%csrf_token%}
-        <button>
-            Delete
-        </button>
+        <button class="btn btn-danger">Delete</button>
     </form>
-    {%endblock%}
-</body>
-</html>
+{%endblock%}
