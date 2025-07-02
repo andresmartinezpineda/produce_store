@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404,get_list_or_404
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
@@ -134,7 +134,7 @@ def product_create(request):
             new_product = form.save(commit=False)
             new_product.user = request.user
             new_product.save()
-            return redirect('home')
+            return redirect('all_products')
         else:
             return render(request,'products/product_create.html',{
                 'form': form,
@@ -194,12 +194,22 @@ def delete_product(request,product_id):
         return redirect('categories')
 
 @login_required
+def all_products(request):
+    """
+    Displays all products for the authenticated user.
+    """
+    products = Product.objects.filter(user=request.user).order_by('category','name')
+    return render(request,'products/all_products.html',{
+        'products': products
+    })
+
+@login_required
 def categories_manage(request):
     """
     Displays all categories for the authenticated user with management options (edit, delete).
     """
     return render(request,'categories/categories_manage.html',{
-        'categories': Category.objects.all()
+        'categories': Category.objects.filter(user=request.user).order_by('name')
     })
 
 @login_required
@@ -241,4 +251,9 @@ def delete_category(request,category_id):
         category.delete()
     
     return redirect('categories_manage')
+
+
+
+
+
 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All producst</title>
+</head>
+<body>
+    {%extends 'layouts/base.html'%}
+
+    {%block content%}
+
+    {%if products%}
+    <h1>All products</h1>
+
+    <ul>
+        {%for product in products%}
+        <li>
+            <p><strong>name:</strong> {{product.name}}</p>
+            <p><strong>description:</strong> {{product.description}}</p>
+            <p><strong>price:</strong> ${{product.price}}</p>
+            <p><strong>stock ({{product.unit}}):</strong> {{product.stock}}</p>
+            <p><strong>category:</strong> {{product.category}}</p>
+        </li>
+        {%endfor%}
+    </ul>
+    {%else%}
+    <p>You have no products registered.</p>
+    {%endif%}
+    {%endblock%}
+</body>
+</html>
