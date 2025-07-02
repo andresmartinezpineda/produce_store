@@ -18,6 +18,12 @@
             Update
         </button>
     </form>
+    <form action="{%url 'delete_category' category.id%}" method="POST">
+        {%csrf_token%}
+        <button>
+            Delete
+        </button>
+    </form>
     {%endblock%}
 </body>
 </html>

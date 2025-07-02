@@ -211,7 +211,8 @@ def edit_category(request,category_id):
     if request.method == 'GET':
         form = CategoryForm(instance=category)
         return render(request,'categories/edit_category.html',{
-            'form': form
+            'form': form,
+            'category': category
         })
 
     else:    
@@ -225,10 +226,19 @@ def edit_category(request,category_id):
         else:
             return render(request, 'categories/edit_category.html', {
                 'form': form,
+                'category': category,
                 'error': 'Please correct the errors below.'
             })
 
-
-
-
+@login_required
+def delete_category(request,category_id):
+    """
+    Allows authenticated users to delete their own categories via POST request
+    from the edit_category template.
+    """
+    if request.method == 'POST':
+        category = get_object_or_404(Category,pk=category_id,user=request.user)
+        category.delete()
+    
+    return redirect('categories_manage')
 
