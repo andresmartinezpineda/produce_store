@@ -26,3 +26,11 @@ class ProductForm(forms.ModelForm):
             'category': forms.Select(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs): # We apply a small customization to the constructor
+        user = kwargs.pop('user', None)  # Extract the user from the arguments, if provided
+        super().__init__(*args, **kwargs) # Call the parent constructor to initialize the form normally
+
+        # if this finds a kwarg data
+        if user:
+            # Displays in the "queryset" the categories in which the user is the same as the one passed in the "kwarg" parameter.
+            self.fields['category'].queryset = Category.objects.filter(user=user)

@@ -4,11 +4,18 @@
 
 {%block content%}
     <h1>Categories edit</h1>
-    <ul class="list-group">
-        {%for category in categories%}
-            <li class="list-group-item">
-                <a href="{%url 'edit_category' category.id%}">{{category}}</a>
-            </li>
-        {%endfor%}
-    </ul>
+
+    {%if categories%}
+        <ul class="list-group">
+            {%for category in categories%}
+                <li class="list-group-item">
+                    <a href="{%url 'edit_category' category.id%}">{{category}}</a>
+                </li>
+            {%endfor%}
+        </ul>
+    {%else%}
+        <div class="alert alert-info mt-3" role="alert">
+            You don't have any categories yet. Create one to get started!
+        </div>
+    {%endif%}
 {%endblock%}

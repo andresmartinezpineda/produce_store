@@ -21,7 +21,10 @@
     {%endfor%}
     </div>
     {%else%}
-        <p>You have no products registered.</p>
+        <div class="alert alert-info mt-3" role="alert">
+            You have no products registered.
+        </div>
+        
     {%endif%}
 </div>
 {%endblock%}

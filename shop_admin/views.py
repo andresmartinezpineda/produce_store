@@ -98,6 +98,15 @@ def category_create(request):
             # Save category if form is valid
             new_category = form.save(commit=False)
             new_category.user = request.user
+
+            exists = Category.objects.filter(name=new_category,user=request.user).exists()
+
+            if exists:
+                return render(request,'categories/category_create.html',{
+                    'form': form,
+                    'error': 'You already have a category with that name.'
+                })
+
             new_category.save()
             return redirect('home')
         else:
@@ -116,10 +125,10 @@ def product_create(request):
     """
     if request.method == 'GET':
         return render(request,'products/product_create.html',{
-            'form': ProductForm()
+            'form': ProductForm(user=request.user)
         })
     else:
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST,user=request.user)
 
         if form.is_valid():
             new_product = form.save(commit=False)
