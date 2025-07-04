@@ -108,7 +108,7 @@ def category_create(request):
                 })
 
             new_category.save()
-            return redirect('home')
+            return redirect('categories_manage')
         else:
             # Form has errors, re-render with existing data and error message
             return render(request, 'categories/category_create.html', {
