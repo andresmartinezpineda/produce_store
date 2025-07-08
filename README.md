@@ -1,4 +1,4 @@
-# 🛒 Produce Store
+# Produce Store
 
 Web application for inventory and sales management in a fruit and vegetable store (fruver), developed with **Python** and **Django**. It allows you to manage products, categories, stock, and sales, all through a friendly and responsive web interface.
 
