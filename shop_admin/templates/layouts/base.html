@@ -35,6 +35,11 @@
                         <a class="nav-link" href="{%url 'all_products'%}"><i class="bi bi-box-seam"></i> All products</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create_sale' %}">
+                            <i class="bi bi-receipt"></i> Sales
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{%url 'logout'%}"><i class="bi bi-box-arrow-right"></i> Logout</a>
                     </li>
                 {%else%}

@@ -1,0 +1,147 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Create Sale</h2>
+
+<!-- Formulario de búsqueda con envío dinámico (sin recargar la página) -->
+<form id="searchForm" class="mb-3 d-flex" role="search">
+    {{ search_form.search }}
+    <button type="submit" class="btn btn-primary ms-2">Search</button>
+</form>
+
+<!-- Lista donde se insertan los resultados dinámicamente con JavaScript -->
+<ul class="list-group mb-4" id="searchResults">
+    <!-- Aquí se agregarán los resultados con JS -->
+</ul>
+
+<!-- 🛒 Tabla de productos seleccionados para la venta -->
+<form method="POST">
+    {% csrf_token %}
+
+    <table class="table table-bordered" id="productTable">
+        <thead class="table-light">
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las filas se agregan dinámicamente aquí -->
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Total: $<span id="totalAmount">0.00</span></h4>
+        <button class="btn btn-success">Register Sale</button>
+    </div>
+</form>
+
+<!-- Script para búsqueda dinámica y manejo de la tabla -->
+<script>
+// Búsqueda de productos sin recargar
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.getElementById('searchForm');
+    
+    // Obtiene el contenedor donde se mostrarán los resultados (por su ID)
+    const resultsContainer = document.getElementById('searchResults');
+
+    // Se ejecuta cuando se envía el formulario con id="searchForm"
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();  // Previene que la página se recargue al enviar el formulario
+
+        // Obtiene el texto ingresado por el usuario en el campo de búsqueda
+        const query = searchForm.querySelector('input[name="search"]').value;
+
+        // Hace una petición GET al servidor, codificando el texto ingresado para que sea seguro en la URL
+        fetch(`/sales/search/?q=${encodeURIComponent(query)}`)
+
+            // Convierte la respuesta de la vista "product_search" en formato JSON
+            .then(response => response.json())
+
+            // Limpia el contenedor antes de insertar nuevos resultados
+            .then(data => {
+                //y trae los resultados de la constante resultsContainer definida al iniciar el script
+                resultsContainer.innerHTML = '';
+
+                // Si no se encontraron productos, muestra un mensaje y detiene el proceso
+                if (data.length === 0) {
+                    resultsContainer.innerHTML = '<li class="list-group-item">No products found.</li>';
+                    return; //sale para no seguir construyendo html innecesario
+                }
+                
+                // Si hay productos, recorre cada uno y construye un <li> con su información
+                data.forEach(product => {
+                    
+                    // Crea un elemento <li> vacío usando JavaScript
+                    const item = document.createElement('li');
+
+                    // Aplica clases de Bootstrap para darle estilo al <li>
+                    item.className = "list-group-item d-flex justify-content-between align-items-center";
+
+                    // Construye el contenido del <li> con nombre, precio y un botón "Add"
+                    item.innerHTML = `
+                        ${product.name} - $${product.price}
+                        <button type="button" class="btn btn-success btn-sm"
+                            onclick="addProduct(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price})">
+                            Add
+                        </button>
+                    `;
+                    // Inserta el <li> generado dentro del contenedor de resultados
+                    resultsContainer.appendChild(item);
+                });
+            });
+    });
+});
+
+// Manejo de productos seleccionados en la tabla
+//esta funcion se ejecita cuando haces clic en el boton Add de un producto de la busqueda
+function addProduct(id, name, price) {
+
+    //busca la tabla con id="productTable", ingresa en ella y busca el elemento tbody
+    //el resultado se guarda en la constante table
+    const table = document.querySelector('#productTable tbody');
+
+    //este if me ayuda a evitar productos duplicados
+    if (document.querySelector(`input[name="product_id"][value="${id}"]`)) {
+        alert("This product is already added.");
+        return;
+    }
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${name}<input type="hidden" name="product_id" value="${id}"></td>
+        <td><input type="number" name="quantity" class="form-control" value="1" min="0" step="0.01" onchange="updateTotal()"></td>
+        <td><input type="number" name="price" class="form-control" value="${price}" min="0" step="0.01" onchange="updateTotal()"></td>
+        <td class="subtotal">$${price.toFixed(2)}</td>
+        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Remove</button></td>
+    `;
+
+    table.appendChild(row);
+    updateTotal();
+}
+
+function removeRow(button) {
+    button.closest('tr').remove();
+    updateTotal();
+}
+
+function updateTotal() {
+    let total = 0;
+    const rows = document.querySelectorAll('#productTable tbody tr');
+
+    rows.forEach(row => {
+        const quantity = parseFloat(row.querySelector('input[name="quantity"]').value) || 0;
+        const price = parseFloat(row.querySelector('input[name="price"]').value) || 0;
+        const subtotal = quantity * price;
+
+        row.querySelector('.subtotal').innerText = `$${subtotal.toFixed(2)}`;
+        total += subtotal;
+    });
+
+    document.getElementById('totalAmount').innerText = total.toFixed(2);
+}
+</script>
+{% endblock %}
